@@ -26,5 +26,19 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Device Setup",
+      "short_name": "Setup",
+      "description": "Install TF Fitness BJJ on another device",
+      "url": "./?setup=1",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
   ]
 }
