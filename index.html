@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="
+      width=device-width,
+      initial-scale=1,
+      viewport-fit=cover
+    "
+  >
+
+  <meta
+    name="theme-color"
+    content="#000000"
+  >
+
+  <meta
+    name="mobile-web-app-capable"
+    content="yes"
+  >
+
+  <meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+  >
+
+  <meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black"
+  >
+
+  <meta
+    name="apple-mobile-web-app-title"
+    content="TF BJJ"
+  >
+
+  <title>
+    TF Fitness BJJ
+  </title>
+
+
+  <link
+    rel="manifest"
+    href="manifest.json"
+  >
+
+
+  <link
+    rel="apple-touch-icon"
+    href="icon-192.png"
+  >
+
+
+  <style>
+
+    :root {
+      --tf-black: #000000;
+      --tf-yellow: #f5c400;
+      --tf-grey: #1d1d1d;
+      --tf-white: #ffffff;
+      --tf-red: #ff4d4d;
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: var(--tf-black);
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    }
+
+
+    #appFrame {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: var(--tf-black);
+    }
+
+
+    #loadingScreen {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--tf-black);
+      color: var(--tf-white);
+      text-align: center;
+      padding: 30px;
+    }
+
+
+    .brand {
+      color: var(--tf-yellow);
+      font-size: 34px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+
+    .title {
+      font-size: 22px;
+      font-weight: 900;
+      margin-bottom: 30px;
+    }
+
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 5px solid #333;
+      border-top-color: var(--tf-yellow);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+
+    .loading-text {
+      margin-top: 18px;
+      color: #aaa;
+      font-size: 15px;
+    }
+
+
+    @keyframes spin {
+
+      to {
+        transform: rotate(360deg);
+      }
+
+    }
+
+
+    #offlineScreen {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: var(--tf-black);
+      color: var(--tf-white);
+      padding: 30px;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+
+    .offline-icon {
+      font-size: 60px;
+      color: var(--tf-yellow);
+      margin-bottom: 20px;
+    }
+
+
+    .offline-title {
+      color: var(--tf-yellow);
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 15px;
+    }
+
+
+    .offline-message {
+      max-width: 500px;
+      color: #ccc;
+      font-size: 17px;
+      line-height: 1.5;
+      margin-bottom: 25px;
+    }
+
+
+    .retry-button {
+      border: none;
+      border-radius: 12px;
+      background: var(--tf-yellow);
+      color: var(--tf-black);
+      padding: 16px 28px;
+      font-size: 18px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+
+    #installBar {
+      display: none;
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom:
+        calc(
+          12px +
+          env(safe-area-inset-bottom)
+        );
+      z-index: 3000;
+      background: #181818;
+      border: 1px solid var(--tf-yellow);
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow:
+        0 4px 20px
+        rgba(0,0,0,.6);
+    }
+
+
+    .install-inner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+
+    .install-message {
+      flex: 1;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+
+    .install-button {
+      border: none;
+      border-radius: 9px;
+      background: var(--tf-yellow);
+      color: var(--tf-black);
+      padding: 11px 15px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+
+    .install-close {
+      border: none;
+      background: transparent;
+      color: #aaa;
+      font-size: 22px;
+      cursor: pointer;
+      padding: 4px 6px;
+    }
+
+
+    #iosInstall {
+      display: none;
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom:
+        calc(
+          12px +
+          env(safe-area-inset-bottom)
+        );
+      z-index: 3000;
+      background: #181818;
+      border: 1px solid var(--tf-yellow);
+      border-radius: 14px;
+      padding: 16px;
+      color: #fff;
+      text-align: center;
+      line-height: 1.5;
+      box-shadow:
+        0 4px 20px
+        rgba(0,0,0,.6);
+    }
+
+
+    .ios-title {
+      color: var(--tf-yellow);
+      font-weight: 900;
+      margin-bottom: 7px;
+    }
+
+
+    .ios-close {
+      margin-top: 12px;
+      border: none;
+      background: #333;
+      color: #fff;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <iframe
+    id="appFrame"
+    title="TF Fitness BJJ Attendance"
+    allowfullscreen>
+  </iframe>
+
+
+  <div id="loadingScreen">
+
+    <div class="brand">
+      TF FITNESS
+    </div>
+
+    <div class="title">
+      BJJ ATTENDANCE
+    </div>
+
+    <div class="spinner">
+    </div>
+
+    <div class="loading-text">
+      Loading attendance system...
+    </div>
+
+  </div>
+
+
+  <div id="offlineScreen">
+
+    <div class="offline-icon">
+      !
+    </div>
+
+    <div class="offline-title">
+      NO INTERNET CONNECTION
+    </div>
+
+    <div class="offline-message">
+
+      The TF Fitness BJJ attendance system
+      needs an internet connection so that
+      attendance records are written safely
+      to the gym database.
+
+    </div>
+
+    <button
+      class="retry-button"
+      onclick="retryConnection()">
+
+      TRY AGAIN
+
+    </button>
+
+  </div>
+
+
+  <div id="installBar">
+
+    <div class="install-inner">
+
+      <div class="install-message">
+        Install TF Fitness BJJ on this device
+      </div>
+
+      <button
+        class="install-button"
+        onclick="installPWA()">
+
+        INSTALL
+
+      </button>
+
+      <button
+        class="install-close"
+        onclick="hideInstallPrompt()">
+
+        ×
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div id="iosInstall">
+
+    <div class="ios-title">
+      INSTALL TF FITNESS BJJ
+    </div>
+
+    On iPhone or iPad, press the
+    Share button and choose
+    <strong>Add to Home Screen</strong>.
+
+    <br>
+
+    <button
+      class="ios-close"
+      onclick="hideIOSInstall()">
+
+      CLOSE
+
+    </button>
+
+  </div>
+
+
+<script>
+
+
+  /**
+   * ========================================================
+   * IMPORTANT
+   *
+   * Replace the URL below with the SAME Apps Script
+   * deployment URL you are currently using.
+   * ========================================================
+   */
+
+  const BJJ_APP_URL =
+    "https://script.google.com/macros/s/AKfycbwOJStGZyI_25efiG5ibZ9QeYcAh91TDif53aZyYx3SH6Acx3eYvCpRiQ8LiW8QSWtW/exec";
+
+
+  const appFrame =
+    document.getElementById(
+      "appFrame"
+    );
+
+
+  const loadingScreen =
+    document.getElementById(
+      "loadingScreen"
+    );
+
+
+  const offlineScreen =
+    document.getElementById(
+      "offlineScreen"
+    );
+
+
+  let deferredInstallPrompt =
+    null;
+
+
+
+  /**
+   * ========================================================
+   * LOAD APP
+   * ========================================================
+   */
+
+  function loadBJJApp() {
+
+
+    if (
+      !navigator.onLine
+    ) {
+
+      showOffline();
+
+      return;
+
+    }
+
+
+    offlineScreen.style.display =
+      "none";
+
+
+    loadingScreen.style.display =
+      "flex";
+
+
+    appFrame.style.display =
+      "block";
+
+
+    appFrame.src =
+      BJJ_APP_URL;
+
+  }
+
+
+
+  appFrame.addEventListener(
+    "load",
+    function() {
+
+
+      loadingScreen.style.display =
+        "none";
+
+
+    }
+  );
+
+
+
+  /**
+   * ========================================================
+   * ONLINE / OFFLINE
+   * ========================================================
+   */
+
+  function showOffline() {
+
+
+    appFrame.style.display =
+      "none";
+
+
+    loadingScreen.style.display =
+      "none";
+
+
+    offlineScreen.style.display =
+      "flex";
+
+  }
+
+
+
+  function retryConnection() {
+
+
+    if (
+      navigator.onLine
+    ) {
+
+
+      loadBJJApp();
+
+
+    } else {
+
+
+      showOffline();
+
+
+    }
+
+  }
+
+
+
+  window.addEventListener(
+    "offline",
+    showOffline
+  );
+
+
+  window.addEventListener(
+    "online",
+    loadBJJApp
+  );
+
+
+
+  /**
+   * ========================================================
+   * SERVICE WORKER
+   * ========================================================
+   */
+
+  if (
+    "serviceWorker" in navigator
+  ) {
+
+
+    window.addEventListener(
+      "load",
+      function() {
+
+
+        navigator
+          .serviceWorker
+          .register(
+            "./service-worker.js"
+          )
+          .catch(
+            function(error) {
+
+
+              console.log(
+                "Service worker registration failed:",
+                error
+              );
+
+
+            }
+          );
+
+
+      }
+    );
+
+
+  }
+
+
+
+  /**
+   * ========================================================
+   * INSTALL PROMPT
+   * ========================================================
+   */
+
+  window.addEventListener(
+    "beforeinstallprompt",
+    function(event) {
+
+
+      event.preventDefault();
+
+
+      deferredInstallPrompt =
+        event;
+
+
+      if (
+        !isStandalone()
+      ) {
+
+
+        document
+          .getElementById(
+            "installBar"
+          )
+          .style.display =
+            "block";
+
+
+      }
+
+
+    }
+  );
+
+
+
+  async function installPWA() {
+
+
+    if (
+      !deferredInstallPrompt
+    ) {
+
+      return;
+
+    }
+
+
+    deferredInstallPrompt
+      .prompt();
+
+
+    await deferredInstallPrompt
+      .userChoice;
+
+
+    deferredInstallPrompt =
+      null;
+
+
+    hideInstallPrompt();
+
+  }
+
+
+
+  function hideInstallPrompt() {
+
+
+    document
+      .getElementById(
+        "installBar"
+      )
+      .style.display =
+        "none";
+
+  }
+
+
+
+  window.addEventListener(
+    "appinstalled",
+    function() {
+
+
+      hideInstallPrompt();
+
+
+      deferredInstallPrompt =
+        null;
+
+
+    }
+  );
+
+
+
+  /**
+   * ========================================================
+   * IOS
+   * ========================================================
+   */
+
+  function isIOS() {
+
+
+    return (
+      /iphone|ipad|ipod/i
+        .test(
+          navigator.userAgent
+        )
+    );
+
+  }
+
+
+
+  function isStandalone() {
+
+
+    return (
+      window.matchMedia(
+        "(display-mode: standalone)"
+      ).matches ||
+
+      window.navigator
+        .standalone === true
+    );
+
+  }
+
+
+
+  function showIOSInstallIfNeeded() {
+
+
+    if (
+      isIOS() &&
+      !isStandalone()
+    ) {
+
+
+      setTimeout(
+        function() {
+
+
+          document
+            .getElementById(
+              "iosInstall"
+            )
+            .style.display =
+              "block";
+
+
+        },
+        2500
+      );
+
+
+    }
+
+  }
+
+
+
+  function hideIOSInstall() {
+
+
+    document
+      .getElementById(
+        "iosInstall"
+      )
+      .style.display =
+        "none";
+
+  }
+
+
+
+  /**
+   * ========================================================
+   * START
+   * ========================================================
+   */
+
+  window.addEventListener(
+    "load",
+    function() {
+
+
+      loadBJJApp();
+
+
+      showIOSInstallIfNeeded();
+
+
+    }
+  );
+
+
+</script>
+
+
+</body>
+
+</html>
