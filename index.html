@@ -44,12 +44,10 @@
     TF Fitness BJJ
   </title>
 
-
   <link
     rel="manifest"
     href="manifest.json"
   >
-
 
   <link
     rel="apple-touch-icon"
@@ -63,13 +61,16 @@
       --tf-black: #000000;
       --tf-yellow: #f5c400;
       --tf-grey: #1d1d1d;
+      --tf-light-grey: #2b2b2b;
       --tf-white: #ffffff;
+      --tf-green: #39ff14;
       --tf-red: #ff4d4d;
     }
 
 
     * {
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
 
@@ -90,14 +91,17 @@
 
     #appFrame {
       position: fixed;
-      top: 0;
-      left: 0;
+      inset: 0;
       width: 100%;
       height: 100%;
       border: 0;
       background: var(--tf-black);
     }
 
+
+    /* =================================
+       LOADING
+    ================================= */
 
     #loadingScreen {
       position: fixed;
@@ -155,11 +159,15 @@
     }
 
 
+    /* =================================
+       OFFLINE
+    ================================= */
+
     #offlineScreen {
       display: none;
       position: fixed;
       inset: 0;
-      z-index: 2000;
+      z-index: 5000;
       background: var(--tf-black);
       color: var(--tf-white);
       padding: 30px;
@@ -205,6 +213,42 @@
       cursor: pointer;
     }
 
+
+    /* =================================
+       DEVICE SETUP BUTTON
+    ================================= */
+
+    #setupButton {
+      position: fixed;
+      top:
+        calc(
+          10px +
+          env(safe-area-inset-top)
+        );
+      right: 10px;
+      z-index: 3500;
+      border: 1px solid #666;
+      border-radius: 9px;
+      background: rgba(0,0,0,.82);
+      color: #aaa;
+      padding: 8px 11px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .5px;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+    }
+
+
+    #setupButton:active {
+      border-color: var(--tf-yellow);
+      color: var(--tf-yellow);
+    }
+
+
+    /* =================================
+       INSTALL BAR
+    ================================= */
 
     #installBar {
       display: none;
@@ -263,6 +307,10 @@
     }
 
 
+    /* =================================
+       IOS MESSAGE
+    ================================= */
+
     #iosInstall {
       display: none;
       position: fixed;
@@ -305,6 +353,260 @@
     }
 
 
+    /* =================================
+       SETUP OVERLAY
+    ================================= */
+
+    #setupOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 6000;
+      background: rgba(0,0,0,.96);
+      overflow-y: auto;
+      color: var(--tf-white);
+      padding:
+        calc(
+          18px +
+          env(safe-area-inset-top)
+        )
+        14px
+        calc(
+          24px +
+          env(safe-area-inset-bottom)
+        );
+    }
+
+
+    .setup-shell {
+      width: 100%;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+
+    .setup-header {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+
+    .setup-brand {
+      color: var(--tf-yellow);
+      font-size: 30px;
+      font-weight: 900;
+    }
+
+
+    .setup-title {
+      margin-top: 7px;
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+
+    .setup-version {
+      margin-top: 7px;
+      color: #777;
+      font-size: 12px;
+    }
+
+
+    .setup-card {
+      background: var(--tf-grey);
+      border: 1px solid #444;
+      border-radius: 15px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+
+    .setup-card-title {
+      color: var(--tf-yellow);
+      font-size: 18px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+
+    .setup-card-text {
+      color: #ccc;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+
+    .qr-wrap {
+      text-align: center;
+    }
+
+
+    #setupQr {
+      width: 280px;
+      max-width: 100%;
+      height: auto;
+      background: white;
+      padding: 10px;
+      border-radius: 12px;
+      margin:
+        10px auto
+        14px;
+      display: block;
+    }
+
+
+    #qrError {
+      display: none;
+      color: #aaa;
+      font-size: 13px;
+      margin: 12px 0;
+    }
+
+
+    .install-url-box {
+      background: #090909;
+      border: 1px solid #444;
+      border-radius: 10px;
+      padding: 12px;
+      color: #ddd;
+      font-size: 12px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+      margin-bottom: 12px;
+      user-select: all;
+    }
+
+
+    .setup-buttons {
+      display: grid;
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(0,1fr)
+        );
+      gap: 9px;
+    }
+
+
+    .setup-action {
+      min-height: 50px;
+      border: none;
+      border-radius: 10px;
+      padding: 11px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+
+    .setup-primary {
+      background: var(--tf-yellow);
+      color: var(--tf-black);
+    }
+
+
+    .setup-secondary {
+      background: var(--tf-light-grey);
+      color: var(--tf-white);
+      border: 1px solid #555;
+    }
+
+
+    .setup-success {
+      display: none;
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #103710;
+      border: 1px solid var(--tf-green);
+      color: #fff;
+      text-align: center;
+      font-size: 13px;
+    }
+
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(
+          3,
+          minmax(0,1fr)
+        );
+      gap: 10px;
+    }
+
+
+    .platform-card {
+      background: #111;
+      border: 1px solid #444;
+      border-radius: 11px;
+      padding: 13px;
+    }
+
+
+    .platform-title {
+      color: var(--tf-yellow);
+      font-size: 15px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+
+    .platform-text {
+      color: #bbb;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+
+    .setup-warning {
+      border-color: #675600;
+      background: #292200;
+    }
+
+
+    .setup-close-main {
+      width: 100%;
+      min-height: 54px;
+      border: none;
+      border-radius: 11px;
+      background: var(--tf-yellow);
+      color: #000;
+      font-size: 17px;
+      font-weight: 900;
+      cursor: pointer;
+      margin-top: 3px;
+    }
+
+
+    @media (
+      max-width: 600px
+    ) {
+
+      .platform-grid,
+      .setup-buttons {
+        grid-template-columns: 1fr;
+      }
+
+
+      #setupButton {
+        padding: 7px 9px;
+        font-size: 10px;
+      }
+
+
+      .setup-brand {
+        font-size: 26px;
+      }
+
+
+      .setup-title {
+        font-size: 21px;
+      }
+
+    }
+
+
   </style>
 
 </head>
@@ -319,6 +621,8 @@
     allowfullscreen>
   </iframe>
 
+
+  <!-- LOADING -->
 
   <div id="loadingScreen">
 
@@ -339,6 +643,8 @@
 
   </div>
 
+
+  <!-- OFFLINE -->
 
   <div id="offlineScreen">
 
@@ -370,6 +676,19 @@
   </div>
 
 
+  <!-- DEVICE SETUP -->
+
+  <button
+    id="setupButton"
+    onclick="openDeviceSetup()">
+
+    DEVICE SETUP
+
+  </button>
+
+
+  <!-- AUTOMATIC INSTALL BAR -->
+
   <div id="installBar">
 
     <div class="install-inner">
@@ -399,6 +718,8 @@
   </div>
 
 
+  <!-- IOS INSTALL HELP -->
+
   <div id="iosInstall">
 
     <div class="ios-title">
@@ -422,15 +743,276 @@
   </div>
 
 
+  <!-- FULL DEVICE SETUP SCREEN -->
+
+  <div id="setupOverlay">
+
+    <div class="setup-shell">
+
+
+      <div class="setup-header">
+
+        <div class="setup-brand">
+          TF FITNESS
+        </div>
+
+        <div class="setup-title">
+          BJJ DEVICE SETUP
+        </div>
+
+        <div class="setup-version">
+          v1.3 • QR Install / New Device Setup
+        </div>
+
+      </div>
+
+
+      <div class="setup-card">
+
+        <div class="setup-card-title">
+          INSTALL ON ANOTHER DEVICE
+        </div>
+
+        <div class="setup-card-text">
+
+          Scan this QR code using the
+          new tablet or phone. It will open
+          the TF Fitness BJJ app directly.
+
+        </div>
+
+
+        <div class="qr-wrap">
+
+          <img
+            id="setupQr"
+            alt="QR code for TF Fitness BJJ app"
+            onerror="handleQrError()"
+          >
+
+          <div id="qrError">
+
+            The QR image could not be loaded.
+            Use COPY LINK or SHARE APP below instead.
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="installUrl"
+          class="install-url-box">
+        </div>
+
+
+        <div class="setup-buttons">
+
+          <button
+            class="setup-action setup-secondary"
+            onclick="copyInstallLink()">
+
+            COPY LINK
+
+          </button>
+
+
+          <button
+            class="setup-action setup-secondary"
+            onclick="shareInstallLink()">
+
+            SHARE APP
+
+          </button>
+
+        </div>
+
+
+        <div
+          id="copySuccess"
+          class="setup-success">
+
+          App link copied.
+
+        </div>
+
+      </div>
+
+
+      <div class="setup-card">
+
+        <div class="setup-card-title">
+          INSTALL ON THIS DEVICE
+        </div>
+
+        <div class="setup-card-text">
+
+          If your browser supports direct
+          PWA installation, use the button below.
+
+        </div>
+
+        <br>
+
+        <button
+          id="setupInstallButton"
+          class="setup-action setup-primary"
+          style="width:100%;"
+          onclick="installFromSetup()">
+
+          INSTALL THIS DEVICE
+
+        </button>
+
+        <div
+          id="setupInstallMessage"
+          class="setup-success">
+        </div>
+
+      </div>
+
+
+      <div class="setup-card">
+
+        <div class="setup-card-title">
+          DEVICE INSTRUCTIONS
+        </div>
+
+
+        <div class="platform-grid">
+
+
+          <div class="platform-card">
+
+            <div class="platform-title">
+              ANDROID
+            </div>
+
+            <div class="platform-text">
+
+              Open the app link in Chrome.
+              Tap INSTALL when offered.
+
+              <br><br>
+
+              If it is not offered, open the
+              Chrome menu and choose
+              <strong>Install app</strong> or
+              <strong>Add to Home screen</strong>.
+
+            </div>
+
+          </div>
+
+
+          <div class="platform-card">
+
+            <div class="platform-title">
+              IPHONE / IPAD
+            </div>
+
+            <div class="platform-text">
+
+              Open the link in Safari.
+
+              <br><br>
+
+              Press the Share button,
+              scroll down and choose
+              <strong>Add to Home Screen</strong>.
+
+            </div>
+
+          </div>
+
+
+          <div class="platform-card">
+
+            <div class="platform-title">
+              COMPUTER
+            </div>
+
+            <div class="platform-text">
+
+              Open the app in Chrome or Edge.
+
+              <br><br>
+
+              Use the Install icon in the
+              address bar or the browser menu
+              and choose
+              <strong>Install TF Fitness BJJ</strong>.
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+      <div class="setup-card setup-warning">
+
+        <div class="setup-card-title">
+          IMPORTANT
+        </div>
+
+        <div class="setup-card-text">
+
+          The QR code and install link only
+          open the public TF Fitness BJJ app.
+
+          <br><br>
+
+          Coach and Admin areas still require
+          the authorised staff name and PIN.
+
+          <br><br>
+
+          Keep this setup screen for staff use
+          rather than displaying the QR code
+          publicly around the gym.
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="setup-close-main"
+        onclick="closeDeviceSetup()">
+
+        RETURN TO BJJ APP
+
+      </button>
+
+
+    </div>
+
+  </div>
+
+
+
 <script>
+
+
+  /**
+   * ========================================================
+   * TF FITNESS BJJ PWA SHELL
+   *
+   * Version 1.3
+   * ========================================================
+   */
 
 
   /**
    * ========================================================
    * IMPORTANT
    *
-   * Replace the URL below with the SAME Apps Script
-   * deployment URL you are currently using.
+   * Paste the SAME working Apps Script /exec URL
+   * that you used in Stage 12.
    * ========================================================
    */
 
@@ -463,7 +1045,51 @@
 
   /**
    * ========================================================
-   * LOAD APP
+   * INSTALL URL
+   * ========================================================
+   */
+
+  function getAppInstallUrl() {
+
+
+    let url =
+      window.location.href
+        .split("?")[0]
+        .split("#")[0];
+
+
+    if (
+      url.toLowerCase()
+        .endsWith(
+          "index.html"
+        )
+    ) {
+
+
+      url =
+        url.substring(
+          0,
+          url.length -
+          "index.html".length
+        );
+
+
+    }
+
+
+    return url;
+
+  }
+
+
+  const APP_INSTALL_URL =
+    getAppInstallUrl();
+
+
+
+  /**
+   * ========================================================
+   * LOAD APPS SCRIPT APP
    * ========================================================
    */
 
@@ -474,9 +1100,11 @@
       !navigator.onLine
     ) {
 
+
       showOffline();
 
       return;
+
 
     }
 
@@ -493,8 +1121,17 @@
       "block";
 
 
-    appFrame.src =
-      BJJ_APP_URL;
+    if (
+      appFrame.src !==
+      BJJ_APP_URL
+    ) {
+
+
+      appFrame.src =
+        BJJ_APP_URL;
+
+
+    }
 
   }
 
@@ -593,7 +1230,7 @@
         navigator
           .serviceWorker
           .register(
-            "./service-worker.js"
+            "./service-worker.js?v=1.3"
           )
           .catch(
             function(error) {
@@ -651,6 +1288,9 @@
       }
 
 
+      updateSetupInstallButton();
+
+
     }
   );
 
@@ -659,11 +1299,80 @@
   async function installPWA() {
 
 
+    await runInstallPrompt();
+
+
+  }
+
+
+
+  async function installFromSetup() {
+
+
+    if (
+      isStandalone()
+    ) {
+
+
+      showSetupInstallMessage(
+        "This device is already running the installed app."
+      );
+
+
+      return;
+
+
+    }
+
+
+    if (
+      deferredInstallPrompt
+    ) {
+
+
+      await runInstallPrompt();
+
+
+      return;
+
+
+    }
+
+
+    if (
+      isIOS()
+    ) {
+
+
+      showSetupInstallMessage(
+        "On iPhone or iPad: open this page in Safari, press Share, then choose Add to Home Screen."
+      );
+
+
+      return;
+
+
+    }
+
+
+    showSetupInstallMessage(
+      "Use your browser menu and choose Install app or Add to Home screen."
+    );
+
+  }
+
+
+
+  async function runInstallPrompt() {
+
+
     if (
       !deferredInstallPrompt
     ) {
 
+
       return;
+
 
     }
 
@@ -672,8 +1381,24 @@
       .prompt();
 
 
-    await deferredInstallPrompt
-      .userChoice;
+    const result =
+      await deferredInstallPrompt
+        .userChoice;
+
+
+    if (
+      result &&
+      result.outcome ===
+        "accepted"
+    ) {
+
+
+      showSetupInstallMessage(
+        "TF Fitness BJJ installation started."
+      );
+
+
+    }
 
 
     deferredInstallPrompt =
@@ -681,6 +1406,40 @@
 
 
     hideInstallPrompt();
+
+
+    updateSetupInstallButton();
+
+  }
+
+
+
+  function updateSetupInstallButton() {
+
+
+    const button =
+      document.getElementById(
+        "setupInstallButton"
+      );
+
+
+    if (
+      isStandalone()
+    ) {
+
+
+      button.textContent =
+        "APP ALREADY INSTALLED";
+
+
+      return;
+
+
+    }
+
+
+    button.textContent =
+      "INSTALL THIS DEVICE";
 
   }
 
@@ -710,6 +1469,14 @@
 
       deferredInstallPrompt =
         null;
+
+
+      updateSetupInstallButton();
+
+
+      showSetupInstallMessage(
+        "TF Fitness BJJ has been installed."
+      );
 
 
     }
@@ -766,12 +1533,25 @@
         function() {
 
 
-          document
-            .getElementById(
-              "iosInstall"
-            )
-            .style.display =
-              "block";
+          if (
+            document
+              .getElementById(
+                "setupOverlay"
+              )
+              .style.display !==
+            "block"
+          ) {
+
+
+            document
+              .getElementById(
+                "iosInstall"
+              )
+              .style.display =
+                "block";
+
+
+          }
 
 
         },
@@ -801,7 +1581,343 @@
 
   /**
    * ========================================================
-   * START
+   * DEVICE SETUP
+   * ========================================================
+   */
+
+  function openDeviceSetup() {
+
+
+    hideInstallPrompt();
+
+
+    hideIOSInstall();
+
+
+    document
+      .getElementById(
+        "setupOverlay"
+      )
+      .style.display =
+        "block";
+
+
+    document
+      .getElementById(
+        "installUrl"
+      )
+      .textContent =
+        APP_INSTALL_URL;
+
+
+    buildSetupQr();
+
+
+    updateSetupInstallButton();
+
+
+    document
+      .getElementById(
+        "copySuccess"
+      )
+      .style.display =
+        "none";
+
+
+    document
+      .getElementById(
+        "setupInstallMessage"
+      )
+      .style.display =
+        "none";
+
+  }
+
+
+
+  function closeDeviceSetup() {
+
+
+    document
+      .getElementById(
+        "setupOverlay"
+      )
+      .style.display =
+        "none";
+
+
+    if (
+      deferredInstallPrompt &&
+      !isStandalone()
+    ) {
+
+
+      document
+        .getElementById(
+          "installBar"
+        )
+        .style.display =
+          "block";
+
+
+    }
+
+  }
+
+
+
+  function buildSetupQr() {
+
+
+    const image =
+      document.getElementById(
+        "setupQr"
+      );
+
+
+    document
+      .getElementById(
+        "qrError"
+      )
+      .style.display =
+        "none";
+
+
+    image.style.display =
+      "block";
+
+
+    image.src =
+      "https://quickchart.io/qr" +
+      "?size=320" +
+      "&margin=1" +
+      "&text=" +
+      encodeURIComponent(
+        APP_INSTALL_URL
+      );
+
+  }
+
+
+
+  function handleQrError() {
+
+
+    document
+      .getElementById(
+        "setupQr"
+      )
+      .style.display =
+        "none";
+
+
+    document
+      .getElementById(
+        "qrError"
+      )
+      .style.display =
+        "block";
+
+  }
+
+
+
+  async function copyInstallLink() {
+
+
+    let copied =
+      false;
+
+
+    if (
+      navigator.clipboard &&
+      window.isSecureContext
+    ) {
+
+
+      try {
+
+
+        await navigator.clipboard
+          .writeText(
+            APP_INSTALL_URL
+          );
+
+
+        copied =
+          true;
+
+
+      } catch (error) {
+
+
+        copied =
+          false;
+
+
+      }
+
+
+    }
+
+
+    if (!copied) {
+
+
+      const textarea =
+        document.createElement(
+          "textarea"
+        );
+
+
+      textarea.value =
+        APP_INSTALL_URL;
+
+
+      textarea.style.position =
+        "fixed";
+
+
+      textarea.style.opacity =
+        "0";
+
+
+      document.body
+        .appendChild(
+          textarea
+        );
+
+
+      textarea.focus();
+
+
+      textarea.select();
+
+
+      try {
+
+
+        copied =
+          document.execCommand(
+            "copy"
+          );
+
+
+      } catch (error) {
+
+
+        copied =
+          false;
+
+
+      }
+
+
+      textarea.remove();
+
+
+    }
+
+
+    const message =
+      document.getElementById(
+        "copySuccess"
+      );
+
+
+    message.textContent =
+      copied
+        ? "App link copied."
+        : "Unable to copy automatically. Press and hold the link above to copy it.";
+
+
+    message.style.display =
+      "block";
+
+  }
+
+
+
+  async function shareInstallLink() {
+
+
+    if (
+      navigator.share
+    ) {
+
+
+      try {
+
+
+        await navigator.share({
+
+          title:
+            "TF Fitness BJJ",
+
+          text:
+            "Install the TF Fitness BJJ attendance app.",
+
+          url:
+            APP_INSTALL_URL
+
+        });
+
+
+        return;
+
+
+      } catch (error) {
+
+
+        if (
+          error.name ===
+          "AbortError"
+        ) {
+
+
+          return;
+
+
+        }
+
+
+      }
+
+
+    }
+
+
+    await copyInstallLink();
+
+  }
+
+
+
+  function showSetupInstallMessage(
+    message
+  ) {
+
+
+    const box =
+      document.getElementById(
+        "setupInstallMessage"
+      );
+
+
+    box.textContent =
+      message;
+
+
+    box.style.display =
+      "block";
+
+  }
+
+
+
+  /**
+   * ========================================================
+   * START APP
    * ========================================================
    */
 
@@ -814,6 +1930,29 @@
 
 
       showIOSInstallIfNeeded();
+
+
+      const params =
+        new URLSearchParams(
+          window.location.search
+        );
+
+
+      if (
+        params.get(
+          "setup"
+        ) ===
+        "1"
+      ) {
+
+
+        setTimeout(
+          openDeviceSetup,
+          500
+        );
+
+
+      }
 
 
     }
