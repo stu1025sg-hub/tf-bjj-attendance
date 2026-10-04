@@ -1,17 +1,18 @@
 /**
+ * ==========================================================
  * TF FITNESS BJJ
  * PWA SERVICE WORKER
  *
- * Version 1.2
+ * Version 1.3
  *
- * Important:
- * This caches the PWA shell only.
- * Attendance/database operations still require internet.
+ * The PWA shell is cached.
+ * Live attendance still requires internet.
+ * ==========================================================
  */
 
 
 const CACHE_NAME =
-  "tf-bjj-pwa-v1.2";
+  "tf-bjj-pwa-v1.3";
 
 
 const SHELL_FILES = [
@@ -60,7 +61,6 @@ self.addEventListener(
 
     self.skipWaiting();
 
-
   }
 );
 
@@ -86,7 +86,8 @@ self.addEventListener(
 
 
                   if (
-                    key !== CACHE_NAME
+                    key !==
+                    CACHE_NAME
                   ) {
 
 
@@ -112,7 +113,6 @@ self.addEventListener(
 
     self.clients.claim();
 
-
   }
 );
 
@@ -134,11 +134,11 @@ self.addEventListener(
 
 
     /**
-     * Only handle files belonging
-     * to the GitHub PWA shell.
+     * Leave external requests alone.
      *
-     * The embedded Apps Script application
-     * remains a live network connection.
+     * This includes:
+     * - Google Apps Script
+     * - QR image service
      */
 
     if (
@@ -150,6 +150,11 @@ self.addEventListener(
 
     }
 
+
+    /**
+     * Navigation:
+     * network first, cached shell fallback.
+     */
 
     if (
       request.mode ===
@@ -180,7 +185,7 @@ self.addEventListener(
 
 
                     cache.put(
-                      request,
+                      "./index.html",
                       copy
                     );
 
@@ -212,9 +217,13 @@ self.addEventListener(
 
       return;
 
-
     }
 
+
+    /**
+     * Shell files:
+     * cache first.
+     */
 
     event.respondWith(
 
@@ -246,7 +255,6 @@ self.addEventListener(
         )
 
     );
-
 
   }
 );
